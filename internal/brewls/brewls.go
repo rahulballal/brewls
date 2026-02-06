@@ -163,6 +163,19 @@ func BuildReverseDependencyGraph(info *BrewInfo) {
 // It now accepts an io.Writer interface, making it more testable.
 func FormatBrewOutput(brewInfo *BrewInfo, writer io.Writer) {
 	showInstalledByCount := IsFeatureEnabled("installed-by-count")
+	formulae := brewInfo.Formulae
+	casks := brewInfo.Casks
+	if FeatureEnabled(featureSortOutput) {
+		formulae = append([]Formula(nil), brewInfo.Formulae...)
+		sort.Slice(formulae, func(i, j int) bool {
+			return formulae[i].Name < formulae[j].Name
+		})
+
+		casks = append([]Cask(nil), brewInfo.Casks...)
+		sort.Slice(casks, func(i, j int) bool {
+			return casks[i].Token < casks[j].Token
+		})
+	}
 
 	// --- Process and Format Formulae ---
 	fmt.Fprintln(writer, "\n--- Homebrew Formulae ---")
@@ -177,7 +190,7 @@ func FormatBrewOutput(brewInfo *BrewInfo, writer io.Writer) {
 		formulaeTable.AppendHeader(table.Row{"Name", "Version", "Installed By"})
 	}
 
-	for _, formula := range brewInfo.Formulae {
+	for _, formula := range formulae {
 		installedVersion := "N/A"
 
 		if len(formula.Installed) > 0 {
@@ -213,7 +226,7 @@ func FormatBrewOutput(brewInfo *BrewInfo, writer io.Writer) {
 		casksTable.AppendHeader(table.Row{"Name", "Version", "Installed By"})
 	}
 
-	for _, cask := range brewInfo.Casks {
+	for _, cask := range casks {
 		displayName := cask.Token
 		if len(cask.Name) > 0 {
 			displayName = cask.Name[0]

@@ -52,7 +52,7 @@ This document outlines the tasks required to develop the `brewls` CLI, based on 
 
 ## Project Management & Collaboration
 
-- [ ] **T11: Feature Flag Implementation:**
+- [x] **T11: Feature Flag Implementation:**
     - [x] T11.1: Incorporate feature flags for new features as per trunk-based development.
 - [x] **T12: GitHub Repository Setup (Future):**
     - [x] T12.1: Create a GitHub repository for the project.
