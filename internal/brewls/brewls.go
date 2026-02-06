@@ -7,6 +7,7 @@ import (
 	"io"
 	"os/exec"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/jedib0t/go-pretty/v6/table" // New import for go-pretty
@@ -161,6 +162,8 @@ func BuildReverseDependencyGraph(info *BrewInfo) {
 // FormatBrewOutput generates the formatted tabular output for formulae and casks.
 // It now accepts an io.Writer interface, making it more testable.
 func FormatBrewOutput(brewInfo *BrewInfo, writer io.Writer) {
+	showInstalledByCount := IsFeatureEnabled("installed-by-count")
+
 	// --- Process and Format Formulae ---
 	fmt.Fprintln(writer, "\n--- Homebrew Formulae ---")
 
@@ -168,7 +171,11 @@ func FormatBrewOutput(brewInfo *BrewInfo, writer io.Writer) {
 	formulaeTable := table.NewWriter()
 	formulaeTable.SetOutputMirror(writer) // Set the output writer
 	// Changed header from "Dependencies" to "Installed By"
-	formulaeTable.AppendHeader(table.Row{"Name", "Version", "Installed By"})
+	if showInstalledByCount {
+		formulaeTable.AppendHeader(table.Row{"Name", "Version", "Installed By", "Installed By Count"})
+	} else {
+		formulaeTable.AppendHeader(table.Row{"Name", "Version", "Installed By"})
+	}
 
 	for _, formula := range brewInfo.Formulae {
 		installedVersion := "N/A"
@@ -183,11 +190,15 @@ func FormatBrewOutput(brewInfo *BrewInfo, writer io.Writer) {
 			displayName += " *"
 		}
 
-		formulaeTable.AppendRow(table.Row{
+		row := table.Row{
 			displayName,
 			installedVersion,
-			strings.Join(formula.InstalledBy, ", "), // Use the new InstalledBy field
-		})
+			strings.Join(formula.InstalledBy, ", "),
+		}
+		if showInstalledByCount {
+			row = append(row, strconv.Itoa(len(formula.InstalledBy)))
+		}
+		formulaeTable.AppendRow(row)
 	}
 	formulaeTable.Render()
 
@@ -196,7 +207,11 @@ func FormatBrewOutput(brewInfo *BrewInfo, writer io.Writer) {
 	casksTable := table.NewWriter()
 	casksTable.SetOutputMirror(writer) // Set the output writer
 	// Changed header from "Dependencies" to "Installed By"
-	casksTable.AppendHeader(table.Row{"Name", "Version", "Installed By"})
+	if showInstalledByCount {
+		casksTable.AppendHeader(table.Row{"Name", "Version", "Installed By", "Installed By Count"})
+	} else {
+		casksTable.AppendHeader(table.Row{"Name", "Version", "Installed By"})
+	}
 
 	for _, cask := range brewInfo.Casks {
 		displayName := cask.Token
@@ -207,11 +222,15 @@ func FormatBrewOutput(brewInfo *BrewInfo, writer io.Writer) {
 			displayName += " *"
 		}
 
-		casksTable.AppendRow(table.Row{
+		row := table.Row{
 			displayName,
 			cask.Installed,
-			strings.Join(cask.InstalledBy, ", "), // Use the new InstalledBy field
-		})
+			strings.Join(cask.InstalledBy, ", "),
+		}
+		if showInstalledByCount {
+			row = append(row, strconv.Itoa(len(cask.InstalledBy)))
+		}
+		casksTable.AppendRow(row)
 	}
 	casksTable.Render()
 }

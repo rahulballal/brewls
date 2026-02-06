@@ -46,6 +46,14 @@ Feature flags are enabled via the `BREWLS_FEATURE_FLAGS` env var as a comma-sepa
 BREWLS_FEATURE_FLAGS=example-flag,another-flag brewls
 ```
 
+Sample flag:
+
+```bash
+BREWLS_FEATURE_FLAGS=installed-by-count brewls
+```
+
+`installed-by-count` adds an "Installed By Count" column to the tables.
+
 ### Example Output Comparison
 
 Compare the default `brew ls` output with the enhanced output from `brewls`.

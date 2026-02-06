@@ -271,6 +271,12 @@ func TestParseBrewInfoJSON(t *testing.T) {
 }
 
 func TestFormatBrewOutput(t *testing.T) {
+	originalFlags := os.Getenv(brewls.FeatureFlagsEnv)
+	defer func() {
+		_ = os.Setenv(brewls.FeatureFlagsEnv, originalFlags)
+	}()
+	_ = os.Setenv(brewls.FeatureFlagsEnv, "")
+
 	tests := []struct {
 		name           string
 		brewInfo       *brewls.BrewInfo
