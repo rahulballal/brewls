@@ -37,10 +37,10 @@ This document outlines the tasks required to develop the `brewls` CLI, based on 
 
 ## Code Quality
 
-- [ ] **T7: Code Formatting:**
-    - [ ] T7.1: Ensure all Go code adheres to `gofmt` standards.
-- [ ] **T8: Linting:**
-    - [ ] T8.1: Integrate `golangci-lint` into the development workflow to catch potential issues.
+- [x] **T7: Code Formatting:**
+    - [x] T7.1: Ensure all Go code adheres to `gofmt` standards.
+- [x] **T8: Linting:**
+    - [x] T8.1: Integrate `golangci-lint` into the development workflow to catch potential issues.
 
 ## Deployment
 

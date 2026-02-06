@@ -88,8 +88,8 @@ Contributions to `brewls` are welcome! Please follow these guidelines:
     *   Pull requests should be descriptive and clearly outline the changes.
     *   Code will be reviewed before merging.
 3.  **Coding Style Guidelines:**
-    *   All Go code must be formatted using `gofmt`.
-    *   We recommend running `golangci-lint` to catch potential issues.
+    *   All Go code must be formatted using `gofmt` (use `make fmt`).
+    *   Run `make lint` to execute `golangci-lint` and `go vet`.
 4.  **Issue Tracking:** We currently do not use a formal issue tracker. Please submit bug reports or feature requests via GitHub discussions or pull requests.
 
 ## 📄 License

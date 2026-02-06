@@ -65,6 +65,12 @@ lint:
 	fi
 	@echo "Running go vet..."
 	$(GO) vet ./...
+	@echo "Running golangci-lint..."
+	@if ! command -v golangci-lint >/dev/null 2>&1; then \
+		echo "golangci-lint not found. Install with: go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.63.4"; \
+		exit 1; \
+	fi
+	golangci-lint run ./...
 	@echo "Lint check complete."
 
 # Format code
@@ -87,10 +93,11 @@ help:
 	@echo "  run     - Builds and runs the application."
 	@echo "  clean   - Removes build artifacts."
 	@echo "  tidy    - Cleans up go.sum and go.mod files."
-	@echo "  lint    - Runs format check and go vet."
+	@echo "  lint    - Runs format check, go vet, and golangci-lint."
 	@echo "  fmt     - Formats code with gofmt."
 	@echo "  help    - Displays this help message."
 	@echo ""
 	@echo "Prerequisites:"
 	@echo "  - Go (version 1.22+ recommended)"
+	@echo "  - golangci-lint (for make lint)"
 	@echo "  - Homebrew ('brew' command must be in your PATH)"
