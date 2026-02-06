@@ -37,6 +37,13 @@ run: build
 	@echo "Running $(GO_BINARY_NAME)..."
 	./$(GO_BINARY_NAME)
 
+# Build macOS release artifacts
+.PHONY: build-macos
+build-macos:
+	@echo "Building macOS release artifacts..."
+	VERSION=$${VERSION:-$$(git describe --tags --always)} scripts/build_macos.sh
+	@echo "macOS artifacts ready in ./dist"
+
 # Clean up build artifacts
 .PHONY: clean
 clean:
@@ -91,6 +98,7 @@ help:
 	@echo "  install - Installs the $(GO_BINARY_NAME) executable to GOPATH/bin."
 	@echo "  test    - Runs all unit tests."
 	@echo "  run     - Builds and runs the application."
+	@echo "  build-macos - Builds macOS release artifacts (darwin/amd64, darwin/arm64)."
 	@echo "  clean   - Removes build artifacts."
 	@echo "  tidy    - Cleans up go.sum and go.mod files."
 	@echo "  lint    - Runs format check, go vet, and golangci-lint."

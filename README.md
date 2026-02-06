@@ -20,9 +20,7 @@
 
 1.  **Clone the repository:**
     ```bash
-    # You would clone from GitHub once the project is hosted.
-    # For local development, ensure you are in the project root.
-    git clone https://github.com/yourusername/brewls.git # Placeholder
+    git clone https://github.com/rahulballal/brewls.git
     cd brewls
     ```
 
@@ -38,6 +36,14 @@ Simply run `brewls` in your terminal:
 
 ```bash
 brewls
+```
+
+### Feature Flags
+
+Feature flags are enabled via the `BREWLS_FEATURE_FLAGS` env var as a comma-separated list:
+
+```bash
+BREWLS_FEATURE_FLAGS=example-flag,another-flag brewls
 ```
 
 ### Example Output Comparison

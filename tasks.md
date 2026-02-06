@@ -44,18 +44,17 @@ This document outlines the tasks required to develop the `brewls` CLI, based on 
 
 ## Deployment
 
-- [ ] **T9: macOS Binary Build:**
-    - [ ] T9.1: Implement a process to build `brewls` binaries specifically for macOS.
-- [ ] **T10: Homebrew Formula Creation (Long-term):**
-    - [ ] T10.1: Create a Homebrew formula for `brewls`.
-    - [ ] T10.2: Ensure compatibility with Homebrew guidelines.
+- [x] **T9: macOS Binary Build:**
+    - [x] T9.1: Implement a process to build `brewls` binaries specifically for macOS.
+- [x] **T10: Homebrew Formula Creation (Long-term):**
+    - [x] T10.1: Create a Homebrew formula for `brewls`.
+    - [x] T10.2: Ensure compatibility with Homebrew guidelines.
 
 ## Project Management & Collaboration
 
 - [ ] **T11: Feature Flag Implementation:**
-    - [ ] T11.1: Incorporate feature flags for new features as per trunk-based development.
-- [ ] **T12: GitHub Repository Setup (Future):**
-    - [ ] T12.1: Create a GitHub repository for the project.
-    - [ ] T12.2: Make the project open-source.
-    - [ ] T12.3: Establish a pull request review process.
-    - [ ] T12.4: Define the process for submitting bug reports or feature requests via GitHub discussions or pull requests.
+    - [x] T11.1: Incorporate feature flags for new features as per trunk-based development.
+- [x] **T12: GitHub Repository Setup (Future):**
+    - [x] T12.1: Create a GitHub repository for the project.
+    - [x] T12.2: Make the project open-source.
+    - [x] T12.3: Establish a pull request review process.
