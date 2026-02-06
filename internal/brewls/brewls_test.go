@@ -484,6 +484,31 @@ func TestFormatBrewOutput(t *testing.T) {
 	}
 }
 
+func TestFeatureEnabled(t *testing.T) {
+	original := os.Getenv("BREWLS_FEATURES")
+	t.Cleanup(func() {
+		if original == "" {
+			_ = os.Unsetenv("BREWLS_FEATURES")
+		} else {
+			_ = os.Setenv("BREWLS_FEATURES", original)
+		}
+	})
+
+	_ = os.Unsetenv("BREWLS_FEATURES")
+	if brewls.FeatureEnabled("sort-output") {
+		t.Fatal("expected sort-output to be disabled when env is unset")
+	}
+
+	_ = os.Setenv("BREWLS_FEATURES", "sort-output,other")
+	if !brewls.FeatureEnabled("sort-output") {
+		t.Fatal("expected sort-output to be enabled")
+	}
+
+	if brewls.FeatureEnabled("missing") {
+		t.Fatal("expected missing to be disabled")
+	}
+}
+
 func TestUniqueAndSortStrings(t *testing.T) {
 	tests := []struct {
 		name     string

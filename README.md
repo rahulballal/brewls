@@ -20,9 +20,7 @@
 
 1.  **Clone the repository:**
     ```bash
-    # You would clone from GitHub once the project is hosted.
-    # For local development, ensure you are in the project root.
-    git clone https://github.com/yourusername/brewls.git # Placeholder
+    git clone https://github.com/rahulballal/brewls.git
     cd brewls
     ```
 
@@ -85,6 +83,7 @@ Contributions to `brewls` are welcome! Please follow these guidelines:
 1.  **Branching Strategy:** We utilize a Trunk-Based Development approach. All development occurs directly on the `main` branch.
 2.  **Pull Request Process:**
     *   Features should be developed behind feature flags to allow safe merging into `main`.
+    *   Feature flags are toggled via `BREWLS_FEATURES` (comma-separated), e.g. `BREWLS_FEATURES=sort-output brewls`.
     *   Pull requests should be descriptive and clearly outline the changes.
     *   Code will be reviewed before merging.
 3.  **Coding Style Guidelines:**
