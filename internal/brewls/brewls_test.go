@@ -80,49 +80,49 @@ func TestExecuteBrewInfoCommand(t *testing.T) {
 	}()
 
 	tests := []struct {
-		name        string
+		name              string
 		mockLookPathError error // Error to return from LookPath("brew")
-		mockOutput  string
-		mockError   string      // Error to return from command execution
-		expectedErr bool
-		expectedOut string
-		expectedErrMsg string // Expected substring in error message
+		mockOutput        string
+		mockError         string // Error to return from command execution
+		expectedErr       bool
+		expectedOut       string
+		expectedErrMsg    string // Expected substring in error message
 	}{
 		{
-			name:        "successful execution",
+			name:              "successful execution",
 			mockLookPathError: nil,
-			mockOutput:  `{"formulae": [], "casks": []}`,
-			mockError:   "",
-			expectedErr: false,
-			expectedOut: `{"formulae": [], "casks": []}`,
-			expectedErrMsg: "",
+			mockOutput:        `{"formulae": [], "casks": []}`,
+			mockError:         "",
+			expectedErr:       false,
+			expectedOut:       `{"formulae": [], "casks": []}`,
+			expectedErrMsg:    "",
 		},
 		{
-			name:        "brew command not found",
+			name:              "brew command not found",
 			mockLookPathError: errors.New("not found in path"),
-			mockOutput:  "",
-			mockError:   "",
-			expectedErr: true,
-			expectedOut: "",
-			expectedErrMsg: "Homebrew 'brew' command not found in PATH",
+			mockOutput:        "",
+			mockError:         "",
+			expectedErr:       true,
+			expectedOut:       "",
+			expectedErrMsg:    "Homebrew 'brew' command not found in PATH",
 		},
 		{
-			name:        "command returns error",
+			name:              "command returns error",
 			mockLookPathError: nil,
-			mockOutput:  "",
-			mockError:   "brew command failed",
-			expectedErr: true,
-			expectedOut: "",
-			expectedErrMsg: "command finished with error",
+			mockOutput:        "",
+			mockError:         "brew command failed",
+			expectedErr:       true,
+			expectedOut:       "",
+			expectedErrMsg:    "command finished with error",
 		},
 		{
-			name:        "empty output",
+			name:              "empty output",
 			mockLookPathError: nil,
-			mockOutput:  "",
-			mockError:   "",
-			expectedErr: false,
-			expectedOut: "",
-			expectedErrMsg: "",
+			mockOutput:        "",
+			mockError:         "",
+			expectedErr:       false,
+			expectedOut:       "",
+			expectedErrMsg:    "",
 		},
 	}
 
@@ -166,15 +166,15 @@ func TestExecuteBrewInfoCommand(t *testing.T) {
 
 func TestParseBrewInfoJSON(t *testing.T) {
 	tests := []struct {
-		name     string
-		jsonInput string
-		expected *brewls.BrewInfo
+		name        string
+		jsonInput   string
+		expected    *brewls.BrewInfo
 		expectedErr bool
 	}{
 		{
-			name: "valid empty JSON",
-			jsonInput: `{"formulae": [], "casks": []}`,
-			expected: &brewls.BrewInfo{Formulae: []brewls.Formula{}, Casks: []brewls.Cask{}},
+			name:        "valid empty JSON",
+			jsonInput:   `{"formulae": [], "casks": []}`,
+			expected:    &brewls.BrewInfo{Formulae: []brewls.Formula{}, Casks: []brewls.Cask{}},
 			expectedErr: false,
 		},
 		{
@@ -213,9 +213,9 @@ func TestParseBrewInfoJSON(t *testing.T) {
 				},
 				Casks: []brewls.Cask{
 					{
-						Token: "test-cask",
-						Name: []string{"Test Cask App"},
-						Version: "2.0.0",
+						Token:     "test-cask",
+						Name:      []string{"Test Cask App"},
+						Version:   "2.0.0",
 						Installed: "2.0.0",
 					},
 				},
@@ -223,9 +223,9 @@ func TestParseBrewInfoJSON(t *testing.T) {
 			expectedErr: false,
 		},
 		{
-			name: "invalid JSON",
-			jsonInput: `{"formulae": [{ "name": "invalid", ]}`,
-			expected: nil,
+			name:        "invalid JSON",
+			jsonInput:   `{"formulae": [{ "name": "invalid", ]}`,
+			expected:    nil,
 			expectedErr: true,
 		},
 		{
@@ -239,8 +239,8 @@ func TestParseBrewInfoJSON(t *testing.T) {
 			expected: &brewls.BrewInfo{
 				Formulae: []brewls.Formula{
 					{
-						Name: "partial-formula",
-						Installed:  nil, // Expected nil for missing slice from Unmarshal
+						Name:         "partial-formula",
+						Installed:    nil, // Expected nil for missing slice from Unmarshal
 						Dependencies: nil, // Expected nil for missing slice from Unmarshal
 					},
 				},
@@ -272,12 +272,12 @@ func TestParseBrewInfoJSON(t *testing.T) {
 
 func TestFormatBrewOutput(t *testing.T) {
 	tests := []struct {
-		name     string
-		brewInfo *brewls.BrewInfo
+		name           string
+		brewInfo       *brewls.BrewInfo
 		expectedOutput string
 	}{
 		{
-			name: "empty brewInfo",
+			name:     "empty brewInfo",
 			brewInfo: &brewls.BrewInfo{Formulae: []brewls.Formula{}, Casks: []brewls.Cask{}},
 			expectedOutput: `
 --- Homebrew Formulae ---
@@ -314,8 +314,8 @@ func TestFormatBrewOutput(t *testing.T) {
 				},
 				Casks: []brewls.Cask{
 					{
-						Token: "test-cask",
-						Name: []string{"Test Cask App"},
+						Token:     "test-cask",
+						Name:      []string{"Test Cask App"},
 						Installed: "2.0.0",
 					},
 				},
@@ -341,8 +341,8 @@ func TestFormatBrewOutput(t *testing.T) {
 			brewInfo: &brewls.BrewInfo{
 				Formulae: []brewls.Formula{
 					{
-						Name: "no-install-formula",
-						Installed: nil,
+						Name:         "no-install-formula",
+						Installed:    nil,
 						Dependencies: []string{"depA"},
 					},
 				},
@@ -435,8 +435,8 @@ func TestFormatBrewOutput(t *testing.T) {
 				},
 				Casks: []brewls.Cask{
 					{ // CaskE: Root, no explicit dependencies in the JSON mock for simplicity
-						Token: "caskE",
-						Name: []string{"Cask E App"},
+						Token:     "caskE",
+						Name:      []string{"Cask E App"},
 						Installed: "1.0.0",
 					},
 				},
@@ -473,10 +473,9 @@ func TestFormatBrewOutput(t *testing.T) {
 
 			var buf bytes.Buffer
 			brewls.FormatBrewOutput(&brewInfoCopy, &buf) // Pass bytes.Buffer directly
-			
+
 			normalizedExpected := strings.TrimSpace(strings.ReplaceAll(tt.expectedOutput, "\r\n", "\n"))
 			normalizedActual := strings.TrimSpace(strings.ReplaceAll(buf.String(), "\r\n", "\n"))
-
 
 			if normalizedActual != normalizedExpected {
 				t.Errorf("Expected output:\n%q\nGot:\n%q", normalizedExpected, normalizedActual)
@@ -485,42 +484,41 @@ func TestFormatBrewOutput(t *testing.T) {
 	}
 }
 
-
 func TestUniqueAndSortStrings(t *testing.T) {
 	tests := []struct {
-		name string
-		input []string
+		name     string
+		input    []string
 		expected []string
 	}{
 		{
-			name: "empty slice",
-			input: []string{},
-			expected: []string{}, 
+			name:     "empty slice",
+			input:    []string{},
+			expected: []string{},
 		},
 		{
-			name: "nil slice",
-			input: nil,
+			name:     "nil slice",
+			input:    nil,
 			expected: []string{}, // Expect empty slice now
 		},
 		{
-			name: "no duplicates, unsorted",
-			input: []string{"c", "a", "b"},
+			name:     "no duplicates, unsorted",
+			input:    []string{"c", "a", "b"},
 			expected: []string{"a", "b", "c"},
 		},
 		{
-			name: "with duplicates",
-			input: []string{"a", "b", "a", "c", "b"},
+			name:     "with duplicates",
+			input:    []string{"a", "b", "a", "c", "b"},
 			expected: []string{"a", "b", "c"},
 		},
 		{
-			name: "already sorted and unique",
-			input: []string{"alpha", "beta", "gamma"},
+			name:     "already sorted and unique",
+			input:    []string{"alpha", "beta", "gamma"},
 			expected: []string{"alpha", "beta", "gamma"},
 		},
 		{
-			name: "mixed case duplicates (should treat as different)",
-			input: []string{"Apple", "apple", "Orange"},
-			expected: []string{"Apple", "Orange", "apple"}, 
+			name:     "mixed case duplicates (should treat as different)",
+			input:    []string{"Apple", "apple", "Orange"},
+			expected: []string{"Apple", "Orange", "apple"},
 		},
 	}
 
@@ -528,7 +526,7 @@ func TestUniqueAndSortStrings(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			got := brewls.UniqueAndSortStrings(tt.input)
 
-			if !reflect.DeepEqual(got, tt.expected) { 
+			if !reflect.DeepEqual(got, tt.expected) {
 				t.Errorf("UniqueAndSortStrings(%v) = %v, want %v", tt.input, got, tt.expected)
 			}
 		})

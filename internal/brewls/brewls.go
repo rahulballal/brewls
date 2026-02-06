@@ -20,18 +20,18 @@ type BrewInfo struct {
 
 // Formula represents a Homebrew formula
 type Formula struct {
-	Name       string      `json:"name"`
-	Installed  []Installed `json:"installed"`
-	Dependencies []string `json:"dependencies"` // Build dependencies
-	InstalledBy  []string // New field: packages that depend on this one
-	IsRoot       bool     // New field: true if this is a top-level package (not depended on)
+	Name         string      `json:"name"`
+	Installed    []Installed `json:"installed"`
+	Dependencies []string    `json:"dependencies"` // Build dependencies
+	InstalledBy  []string    // New field: packages that depend on this one
+	IsRoot       bool        // New field: true if this is a top-level package (not depended on)
 }
 
 // Installed represents an installed version of a formula
 type Installed struct {
-	Version             string             `json:"version"`
+	Version             string              `json:"version"`
 	RuntimeDependencies []RuntimeDependency `json:"runtime_dependencies"`
-	InstalledOnRequest bool `json:"installed_on_request"` // This field is crucial for identifying root packages
+	InstalledOnRequest  bool                `json:"installed_on_request"` // This field is crucial for identifying root packages
 }
 
 // RuntimeDependency represents a runtime dependency of an installed formula
@@ -42,10 +42,10 @@ type RuntimeDependency struct {
 
 // Cask represents a Homebrew cask
 type Cask struct {
-	Token   string `json:"token"`
-	Name    []string `json:"name"` // Display name, if available
-	Version string `json:"version"`
-	Installed string `json:"installed"` // This seems to represent the installed version for casks
+	Token       string   `json:"token"`
+	Name        []string `json:"name"` // Display name, if available
+	Version     string   `json:"version"`
+	Installed   string   `json:"installed"` // This seems to represent the installed version for casks
 	InstalledBy []string // New field: packages that depend on this one (less common for casks)
 	IsRoot      bool     // New field: true if this is a top-level package
 	// Homebrew cask info often just lists depends_on for macOS versions or other casks/formulae,
@@ -99,7 +99,7 @@ func ParseBrewInfoJSON(jsonInput string) (*BrewInfo, error) {
 func BuildReverseDependencyGraph(info *BrewInfo) {
 	// Map to store which packages install a given package
 	installedByMap := make(map[string][]string)
-	
+
 	// Collect all installed package names for quick lookup
 	allInstalledPackages := make(map[string]struct{})
 	for _, f := range info.Formulae {
@@ -158,13 +158,12 @@ func BuildReverseDependencyGraph(info *BrewInfo) {
 	}
 }
 
-
 // FormatBrewOutput generates the formatted tabular output for formulae and casks.
 // It now accepts an io.Writer interface, making it more testable.
 func FormatBrewOutput(brewInfo *BrewInfo, writer io.Writer) {
 	// --- Process and Format Formulae ---
 	fmt.Fprintln(writer, "\n--- Homebrew Formulae ---")
-	
+
 	// Create a new go-pretty table writer
 	formulaeTable := table.NewWriter()
 	formulaeTable.SetOutputMirror(writer) // Set the output writer
@@ -177,7 +176,7 @@ func FormatBrewOutput(brewInfo *BrewInfo, writer io.Writer) {
 		if len(formula.Installed) > 0 {
 			installedVersion = formula.Installed[len(formula.Installed)-1].Version
 		}
-		
+
 		// Determine display name for formulae
 		displayName := formula.Name
 		if formula.IsRoot {
@@ -207,7 +206,7 @@ func FormatBrewOutput(brewInfo *BrewInfo, writer io.Writer) {
 		if cask.IsRoot {
 			displayName += " *"
 		}
-		
+
 		casksTable.AppendRow(table.Row{
 			displayName,
 			cask.Installed,
@@ -220,17 +219,17 @@ func FormatBrewOutput(brewInfo *BrewInfo, writer io.Writer) {
 // UniqueAndSortStrings is a helper function to remove duplicates and sort strings.
 // It now returns an empty slice instead of nil for empty input.
 func UniqueAndSortStrings(s []string) []string { // Exported
-    if len(s) == 0 {
-        return []string{} // Return empty slice instead of nil
-    }
-    seen := make(map[string]struct{})
-    var result []string
-    for _, val := range s {
-        if _, ok := seen[val]; !ok {
-            seen[val] = struct{}{}
-            result = append(result, val)
-        }
-    }
-    sort.Strings(result)
-    return result
+	if len(s) == 0 {
+		return []string{} // Return empty slice instead of nil
+	}
+	seen := make(map[string]struct{})
+	var result []string
+	for _, val := range s {
+		if _, ok := seen[val]; !ok {
+			seen[val] = struct{}{}
+			result = append(result, val)
+		}
+	}
+	sort.Strings(result)
+	return result
 }
