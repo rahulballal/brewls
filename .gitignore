@@ -1,0 +1,23 @@
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binary, generated with `go test -c`
+*.test
+
+# Output of the go toolchain when building for other platforms
+*.out
+
+# Editor/IDE files
+.idea/
+.vscode/
+.DS_Store
+
+# Go modules
+/vendor/
+go.sum
+
+# Logs
+*.log
