@@ -8,21 +8,11 @@ GO_BINARY_PATH := $(shell $(GO) env GOPATH)/bin/$(GO_BINARY_NAME)
 
 # Default target
 .PHONY: all
-all: check-brew install
-
-# Check if brew command is available
-.PHONY: check-brew
-check-brew:
-	@if ! command -v brew &> /dev/null; then \
-		echo "Error: Homebrew 'brew' command not found."; \
-		echo "Please install Homebrew (https://brew.sh/) before proceeding."; \
-		exit 1; \
-	fi
-	@echo "Homebrew 'brew' command found."
+all: install
 
 # Build the application binary
 .PHONY: build
-build: check-brew
+build:
 	@echo "Building $(GO_BINARY_NAME)..."
 	mkdir -p bin
 	$(GO) build -o bin/$(GO_BINARY_NAME) $(GO_BUILD_TARGET)
@@ -43,7 +33,7 @@ test:
 
 # Run the application
 .PHONY: run
-run: check-brew build
+run: build
 	@echo "Running $(GO_BINARY_NAME)..."
 	./$(GO_BINARY_NAME)
 

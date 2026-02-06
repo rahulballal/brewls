@@ -21,19 +21,6 @@ jobs:
       with:
         go-version: '1.22' # As recommended in GEMINI.md
 
-    - name: Install Homebrew (for `brew` command in check-brew)
-      run: |
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        echo "HOMEBREW_PREFIX=$(brew --prefix)" >> $GITHUB_ENV
-        echo "HOMEBREW_CELLAR=$(brew --cellar)" >> $GITHUB_ENV
-        echo "HOMEBREW_REPOSITORY=$(brew --repository)" >> $GITHUB_ENV
-        echo "PATH=$(brew --prefix)/bin:$(brew --prefix)/sbin:$PATH" >> $GITHUB_ENV
-        brew update --preinstall
-        brew install git # Ensure git is available for Homebrew (might be redundant on github actions runner)
-
-    - name: Verify brew command
-      run: make check-brew
-
     - name: Build
       run: make build
 
