@@ -45,18 +45,26 @@ clean:
 	@rm -f bin/$(GO_BINARY_NAME)
 	@echo "Clean complete."
 
+# Tidy Go module dependencies
+.PHONY: tidy
+tidy:
+	@echo "Tidying Go module dependencies..."
+	$(GO) mod tidy
+	@echo "Go module dependencies tidied."
+
 # Help message
 .PHONY: help
 help:
 	@echo "Usage: make <command>"
 	@echo ""
 	@echo "Commands:"
-	@echo "  all     - Builds and installs the application (default)."
+	@echo "  all     - Builds, tidies, and installs the application (default)."
 	@echo "  build   - Builds the $(GO_BINARY_NAME) executable."
 	@echo "  install - Installs the $(GO_BINARY_NAME) executable to GOPATH/bin."
 	@echo "  test    - Runs all unit tests."
 	@echo "  run     - Builds and runs the application."
 	@echo "  clean   - Removes build artifacts."
+	@echo "  tidy    - Cleans up go.sum and go.mod files."
 	@echo "  help    - Displays this help message."
 	@echo ""
 	@echo "Prerequisites:"

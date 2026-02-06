@@ -21,6 +21,9 @@ jobs:
       with:
         go-version: '1.22' # As recommended in GEMINI.md
 
+    - name: Tidy Go modules
+      run: make tidy
+
     - name: Build
       run: make build
 
