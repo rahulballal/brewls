@@ -48,21 +48,10 @@ Compare the default `brew ls` output with the enhanced output from `brewls`.
 
 ```
 ==> Formulae
-ada-url                 fmt                     icu4c@78                libunistring            node                    starship
-awscli                  fnm                     jpeg-turbo              libuv                   openssl@3               tree
-bottom                  fzf                     lazygit                 little-cms2             pcre2                   tree-sitter@0.25
-brotli                  gemini-cli              libgit2                 llhttp                  python@3.13             unibilium
-bun                     gettext                 libiconv                lpeg                    python@3.14             utf8proc
-c-ares                  gh                      libnghttp2              luajit                  readline                uvwasi
-ca-certificates         git                     libnghttp3              luv                     ripgrep                 xz
-certifi                 go                      libngtcp2               lz4                     simdjson                zstd
-deno                    hdrhistogram_c          libssh2                 mpdecimal               specify
-eza                     httpie                  libtiff                 neovim                  sqlite
+awscli                  go                      node                    openssl@3               python@3.13             tree
 
 ==> Casks
-bitwarden               ghostty                 oracle-jdk              rectangle               vlc                     zoom
-claude-code             microsoft-edge          pycharm-ce              surfshark               webstorm
-flameshot               notion                  raycast                 visual-studio-code      yaak
+bitwarden               visual-studio-code
 ```
 
 **`brewls` Output:**
