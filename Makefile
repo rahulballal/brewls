@@ -30,9 +30,9 @@ build: check-brew
 
 # Install the application using go install
 .PHONY: install
-install: check-brew
-	@echo "Installing $(GO_BINARY_NAME) to $(GO_BINARY_PATH)..."
-	$(GO) install $(GO_BUILD_TARGET)
+install: build
+	@echo "Installing $(GO_BINARY_NAME) from ./bin/$(GO_BINARY_NAME) to $(GO_BINARY_PATH)..."
+	cp bin/$(GO_BINARY_NAME) $(GO_BINARY_PATH)
 	@echo "Installation complete. Ensure $(shell $(GO) env GOPATH)/bin is in your PATH."
 
 # Run all tests
