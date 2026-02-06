@@ -293,107 +293,106 @@ func TestFormatBrewOutput(t *testing.T) {
 +------+---------+--------------+
 `,
 		},
-		// { // Disabled for now, as expected output needs precise tuning with BuildReverseDependencyGraph interaction
-		// 	name: "single formula and cask",
-		// 	brewInfo: &brewls.BrewInfo{
-		// 		Formulae: []brewls.Formula{
-		// 			{
-		// 				Name: "test-formula",
-		// 				Installed: []brewls.Installed{
-		// 					{
-		// 						Version: "1.0.0",
-		// 						RuntimeDependencies: []brewls.RuntimeDependency{
-		// 							{FullName: "dep1"},
-		// 							{FullName: "dep2"},
-		// 						},
-		// 					},
-		// 				},
-		// 				Dependencies: []string{"build-dep1"},
-		// 			},
-		// 		},
-		// 		Casks: []brewls.Cask{
-		// 			{
-		// 				Token: "test-cask",
-		// 				Name: []string{"Test Cask App"},
-		// 				Installed: "2.0.0",
-		// 			},
-		// 		},
-		// 	},
-		// 	expectedOutput: `
-		// --- Homebrew Formulae ---
-		// +--------------+---------+--------------------------+
-		// | NAME         | VERSION | INSTALLED BY             |
-		// +--------------+---------+--------------------------+
-		// | test-formula | 1.0.0   | build-dep1, dep1, dep2   |
-		// +--------------+---------+--------------------------+
+		{
+			name: "single formula and cask",
+			brewInfo: &brewls.BrewInfo{
+				Formulae: []brewls.Formula{
+					{
+						Name: "test-formula",
+						Installed: []brewls.Installed{
+							{
+								Version: "1.0.0",
+								// Note: InstalledOnRequest is false by default, so test-formula will not be a root here
+								RuntimeDependencies: []brewls.RuntimeDependency{
+									{FullName: "dep1"},
+									{FullName: "dep2"},
+								},
+							},
+						},
+						Dependencies: []string{"build-dep1"},
+					},
+				},
+				Casks: []brewls.Cask{
+					{
+						Token: "test-cask",
+						Name: []string{"Test Cask App"},
+						Installed: "2.0.0",
+					},
+				},
+			},
+			expectedOutput: `
+--- Homebrew Formulae ---
++--------------+---------+--------------+
+| NAME         | VERSION | INSTALLED BY |
++--------------+---------+--------------+
+| test-formula | 1.0.0   |              |
++--------------+---------+--------------+
 
-		// --- Homebrew Casks ---
-		// +---------------+---------+--------------+
-		// | NAME          | VERSION | INSTALLED BY |
-		// +---------------+---------+--------------+
-		// | Test Cask App | 2.0.0   |              |
-		// +---------------+---------+--------------+
-		// `,
-		// },
-		// { // Disabled for now, as expected output needs precise tuning with BuildReverseDependencyGraph interaction
-		// 	name: "formula with no installed version",
-		// 	brewInfo: &brewls.BrewInfo{
-		// 		Formulae: []brewls.Formula{
-		// 			{
-		// 				Name: "no-install-formula",
-		// 				Installed: nil,
-		// 				Dependencies: []string{"depA"},
-		// 			},
-		// 		},
-		// 		Casks: []brewls.Cask{},
-		// 	},
-		// 	expectedOutput: `
-		// --- Homebrew Formulae ---
-		// +--------------------+---------+--------------+
-		// | NAME               | VERSION | INSTALLED BY |
-		// +--------------------+---------+--------------+
-		// | no-install-formula | N/A     |              |
-		// +--------------------+---------+--------------+
+--- Homebrew Casks ---
++-----------------+---------+--------------+
+| NAME            | VERSION | INSTALLED BY |
++-----------------+---------+--------------+
+| Test Cask App * | 2.0.0   |              |
++-----------------+---------+--------------+
+`,
+		},
+		{
+			name: "formula with no installed version",
+			brewInfo: &brewls.BrewInfo{
+				Formulae: []brewls.Formula{
+					{
+						Name: "no-install-formula",
+						Installed: nil,
+						Dependencies: []string{"depA"},
+					},
+				},
+				Casks: []brewls.Cask{},
+			},
+			expectedOutput: `
+--- Homebrew Formulae ---
++--------------------+---------+--------------+
+| NAME               | VERSION | INSTALLED BY |
++--------------------+---------+--------------+
+| no-install-formula | N/A     |              |
++--------------------+---------+--------------+
 
-		// --- Homebrew Casks ---
-		// +------+---------+--------------+
-		// | NAME | VERSION | INSTALLED BY |
-		// +------+---------+--------------+
-		// |      |         |              |
-		// +------+---------+--------------+
-		// `,
-		// },
-		// { // Disabled for now, as expected output needs precise tuning with BuildReverseDependencyGraph interaction
-		// 	name: "formula with multiple installed versions (should use last)",
-		// 	brewInfo: &brewls.BrewInfo{
-		// 		Formulae: []brewls.Formula{
-		// 			{
-		// 				Name: "multi-version",
-		// 				Installed: []brewls.Installed{
-		// 					{Version: "1.0.0"},
-		// 					{Version: "1.1.0"},
-		// 				},
-		// 				Dependencies: nil,
-		// 			},
-		// 		},
-		// 		Casks: []brewls.Cask{},
-		// 	},
-		// 	expectedOutput: `
-		// --- Homebrew Formulae ---
-		// +---------------+---------+--------------+
-		// | NAME          | VERSION | INSTALLED BY |
-		// +---------------+---------+--------------+
-		// | multi-version | 1.1.0   |              |
-		// +---------------+---------+--------------+
+--- Homebrew Casks ---
++------+---------+--------------+
+| NAME | VERSION | INSTALLED BY |
++------+---------+--------------+
++------+---------+--------------+
+`,
+		},
+		{
+			name: "formula with multiple installed versions (should use last)",
+			brewInfo: &brewls.BrewInfo{
+				Formulae: []brewls.Formula{
+					{
+						Name: "multi-version",
+						Installed: []brewls.Installed{
+							{Version: "1.0.0"},
+							{Version: "1.1.0"},
+						},
+						Dependencies: nil,
+					},
+				},
+				Casks: []brewls.Cask{},
+			},
+			expectedOutput: `
+--- Homebrew Formulae ---
++---------------+---------+--------------+
+| NAME          | VERSION | INSTALLED BY |
++---------------+---------+--------------+
+| multi-version | 1.1.0   |              |
++---------------+---------+--------------+
 
-		// --- Homebrew Casks ---
-		// +------+---------+--------------+
-		// | NAME | VERSION | INSTALLED BY |
-		// +------+---------+--------------+
-		// |      |         |              |
-		// +------+---------+--------------+
-		// `,
-		// },
+--- Homebrew Casks ---
++------+---------+--------------+
+| NAME | VERSION | INSTALLED BY |
++------+---------+--------------+
++------+---------+--------------+
+`,
+		},
 		{
 			name: "complex mock brewInfo with reverse dependencies and root markers",
 			brewInfo: &brewls.BrewInfo{
