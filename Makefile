@@ -24,8 +24,9 @@ check-brew:
 .PHONY: build
 build: check-brew
 	@echo "Building $(GO_BINARY_NAME)..."
-	$(GO) build -o $(GO_BINARY_NAME) $(GO_BUILD_TARGET)
-	@echo "Build complete. Binary: ./$(GO_BINARY_NAME)"
+	mkdir -p bin
+	$(GO) build -o bin/$(GO_BINARY_NAME) $(GO_BUILD_TARGET)
+	@echo "Build complete. Binary: ./bin/$(GO_BINARY_NAME)"
 
 # Install the application using go install
 .PHONY: install
@@ -51,7 +52,7 @@ run: check-brew build
 clean:
 	@echo "Cleaning up..."
 	$(GO) clean
-	@rm -f $(GO_BINARY_NAME)
+	@rm -f bin/$(GO_BINARY_NAME)
 	@echo "Clean complete."
 
 # Help message
