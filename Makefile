@@ -52,6 +52,28 @@ tidy:
 	$(GO) mod tidy
 	@echo "Go module dependencies tidied."
 
+# Lint and format check
+.PHONY: lint
+lint:
+	@echo "Running format check..."
+	@gofmt_diff=$$(gofmt -l .); \
+	if [ -n "$$gofmt_diff" ]; then \
+		echo "gofmt found unformatted files:"; \
+		echo "$$gofmt_diff"; \
+		echo "Run 'make fmt' to format your code."; \
+		exit 1; \
+	fi
+	@echo "Running go vet..."
+	$(GO) vet ./...
+	@echo "Lint check complete."
+
+# Format code
+.PHONY: fmt
+fmt:
+	@echo "Formatting code..."
+	gofmt -w .
+	@echo "Code formatted."
+
 # Help message
 .PHONY: help
 help:
@@ -65,6 +87,8 @@ help:
 	@echo "  run     - Builds and runs the application."
 	@echo "  clean   - Removes build artifacts."
 	@echo "  tidy    - Cleans up go.sum and go.mod files."
+	@echo "  lint    - Runs format check and go vet."
+	@echo "  fmt     - Formats code with gofmt."
 	@echo "  help    - Displays this help message."
 	@echo ""
 	@echo "Prerequisites:"
